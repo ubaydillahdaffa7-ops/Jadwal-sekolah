@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jadwal SMPN 2 Bondowoso</title>
+<style>
+:root{--navy:#162A4D;--navy-deep:#0E1D38;--gold:#C6962E;--gold-soft:#F4E6C3;--paper:#F6F3EC;--card:#fff;--ink:#1E2430;--ink-soft:#6B7280;--line:#E4DFD3;--today-bg:#FFF7E6;--ok:#d9f2df;--no:#fbdada;box-sizing:border-box}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;background:var(--paper);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{display:flex;flex-direction:column;min-height:100%}
+header{background:linear-gradient(135deg,var(--navy),var(--navy-deep));color:#fff;padding:22px 18px 18px;position:relative;overflow:hidden;flex-shrink:0}
+header::after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border:10px solid rgba(198,150,46,.18);border-radius:50%;pointer-events:none}
+.crest{width:46px;height:46px;border-radius:50%;background:var(--gold);color:var(--navy-deep);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;border:2px solid rgba(255,255,255,.5)}
+.head-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.school{font-size:15px;font-weight:700}.kelas{font-size:12.5px;color:var(--gold-soft);margin-top:2px}
+body.super .kelas::after{content:" · 💎 Premium · Super Friends"}
+.head-sub{margin-top:14px;font-size:12px;color:rgba(255,255,255,.65);position:relative;z-index:1}
+.egg{position:absolute;right:20px;top:20px;z-index:2;background:none;border:none;font-size:30px;padding:4px;animation:fl 3s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-5px) rotate(7deg)}}
+main{flex:1;overflow-y:auto;padding:16px 16px 90px;-webkit-overflow-scrolling:touch}
+.view{display:none}.view.active{display:block}
+.section-title{font-size:13px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.6px;margin:4px 2px 10px}
+.day-card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.day-card.today{background:var(--today-bg);border-color:var(--gold);box-shadow:0 2px 10px rgba(198,150,46,.18)}
+.day-head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;cursor:pointer}
+.day-name{font-size:15px;font-weight:700;color:var(--navy)}
+.day-badge{font-size:10.5px;font-weight:700;color:#fff;background:var(--gold);padding:2px 8px;border-radius:999px;margin-left:8px}
+.day-count{font-size:12px;color:var(--ink-soft)}
+.chev{transition:transform .2s;color:var(--ink-soft);font-size:12px}.day-card.open .chev{transform:rotate(180deg)}
+.subj-list{max-height:0;overflow:hidden;transition:max-height .25s}
+.day-card.open .subj-list{border-top:1px solid var(--line)}
+.subj-item{display:flex;align-items:center;gap:10px;padding:11px 15px;font-size:13.5px}
+.subj-item+.subj-item{border-top:1px dashed var(--line)}
+.subj-dot{width:7px;height:7px;border-radius:50%;background:var(--navy);flex-shrink:0}
+.subj-name{font-weight:600}.subj-short{color:var(--ink-soft);font-size:11.5px;margin-left:auto}
+.subj-book{display:none}
+body.super .subj-item{cursor:pointer}body.super .subj-book{display:inline}
+.month-label{font-size:12px;font-weight:700;color:var(--navy);padding:8px 2px 6px}
+.year-label{font-size:15px;font-weight:800;color:var(--navy);margin:14px 2px 2px;padding-bottom:4px;border-bottom:2px solid var(--gold)}
+.hol-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center}
+.hol-item.next{border-color:var(--gold);background:var(--today-bg)}
+.hol-date{width:46px;text-align:center;flex-shrink:0}
+.hol-date .d{font-size:18px;font-weight:700;color:var(--navy);line-height:1}.hol-date .m{font-size:9.5px;color:var(--ink-soft);text-transform:uppercase}
+.hol-text .t{font-size:13.5px;font-weight:600}.hol-text .tag{font-size:11px;color:var(--ink-soft);margin-top:1px}
+.next-pill{margin-left:auto;font-size:10px;font-weight:700;color:#fff;background:var(--navy);padding:3px 8px;border-radius:999px;flex-shrink:0}
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy-deep));color:#fff;border-radius:16px;padding:18px;text-align:center;margin-bottom:12px}
+.hero small{color:var(--gold-soft);font-size:12px}.hero .nm{font-size:22px;font-weight:800;margin:4px 0}
+.hero .cd{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--gold)}
+.pray-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 15px;margin-bottom:8px;display:flex;justify-content:space-between;font-size:14px}
+.pray-row b{font-variant-numeric:tabular-nums;color:var(--navy)}
+.pray-row.minor{opacity:.75;font-size:13px}
+.pray-row.next{border-color:var(--gold);background:var(--today-bg)}
+.btn{width:100%;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;font-family:inherit;background:var(--navy);color:#fff;margin:6px 0 8px;display:block;text-align:center;text-decoration:none}
+.btn.on{background:var(--gold);color:var(--navy-deep)}
+.btn.wa{background:#1FA855}.btn.mail{background:var(--gold);color:var(--navy-deep)}
+.note{font-size:11.5px;color:var(--ink-soft);text-align:center;line-height:1.5}
+.info-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;margin-bottom:12px}
+.big-crest{width:64px;height:64px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;margin:0 auto 12px}
+.info-card h2{font-size:16px;margin:0 0 4px;color:var(--navy)}.info-card p{font-size:12.5px;color:var(--ink-soft);margin:0}
+.dev-card{color:var(--ink-soft);font-size:12px}
+.dev-card .name{display:block;margin-top:4px;font-size:14px;color:var(--navy);font-weight:700}
+.contact a{display:flex;justify-content:space-between;gap:10px;padding:11px 4px;color:var(--navy);text-decoration:none;font-size:13.5px;font-weight:600;border-top:1px dashed var(--line);word-break:break-all}
+.contact a span{color:var(--ink-soft);font-weight:400;flex-shrink:0}
+.contact h3{margin:0 0 6px;font-size:14px;color:var(--navy)}
+.friend{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;font-size:14px;font-weight:600}
+.friend i{width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--gold);font-style:normal;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.quote{margin-top:14px;text-align:center;font-style:italic;color:var(--ink-soft);font-size:13px}
+.brief{text-align:left;font-size:13px;line-height:1.7}.brief b{color:var(--navy)}
+.add{display:flex;gap:8px;margin-bottom:12px}.add input,.in{flex:1;min-width:0;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;font-size:14px;background:var(--card);color:var(--ink);width:100%}
+.add button{border:none;border-radius:12px;padding:0 16px;background:var(--gold);color:var(--navy-deep);font-weight:700;font-family:inherit}
+.task{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px;font-size:14px}
+.task span{flex:1;word-break:break-word}.task.done span{text-decoration:line-through;opacity:.5}.task input{width:18px;height:18px}
+.task button{border:none;background:none;font-size:16px;color:var(--ink-soft)}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav button{flex:1;border:none;background:none;padding:10px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-soft);font-size:10px;font-family:inherit;font-weight:600}
+nav .ic{font-size:19px;line-height:1}nav button.active{color:var(--navy)}
+.tab-kuis{display:none!important}body.super .tab-kuis{display:flex!important}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}.ov.show{display:flex}
+.sheet{background:var(--card);width:100%;max-width:520px;max-height:85%;overflow:auto;border-radius:18px 18px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));font-size:13.5px;line-height:1.7}
+.sheet h2{margin:0 0 8px;font-size:17px;color:var(--navy)}.sheet .msg{margin-top:8px;font-size:13px;min-height:18px;text-align:center}
+.mat{margin:0;padding-left:18px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mc{border:none;border-radius:16px;padding:14px 12px;color:#fff;font:inherit;font-weight:800;text-align:left;display:flex;flex-direction:column;gap:2px;background:linear-gradient(145deg,hsl(var(--h),60%,42%),hsl(var(--h),55%,28%));box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.mc:active{transform:scale(.96)}.mc .e{font-size:28px}.mc .t{display:block;font-size:15px}.mc small{display:block;margin-top:2px;font-weight:400;font-size:10.5px;opacity:.9;line-height:1.35}
+.mc.all{grid-column:1/-1;background:linear-gradient(120deg,#C6962E,#f0c860);color:#0E1D38;flex-direction:row;align-items:center;gap:12px}.mc.all .e{font-size:30px}
+.qbar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:10px}.qbar i{display:block;height:100%;background:linear-gradient(90deg,#C6962E,#ffe08a);border-radius:99px}
+.qtop{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--ink-soft);margin-bottom:10px}
+.qtag{display:inline-block;font-size:10.5px;font-weight:700;background:var(--gold-soft);color:#0E1D38;padding:2px 9px;border-radius:999px;margin-bottom:8px}
+.qcard{background:linear-gradient(135deg,#162A4D,#3b2a6e);color:#fff;border-radius:18px;padding:22px 18px;font-size:17px;font-weight:700;line-height:1.5;margin-bottom:6px;box-shadow:0 4px 12px rgba(22,42,77,.3)}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;border-radius:14px;padding:12px 14px;margin-top:8px}
+.opt b{width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:#0E1D38;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.opt.ok{background:var(--ok);border-color:#3aa655;color:#14301b}.opt.no{background:var(--no);border-color:#d25a5a;color:#3a1414}
+.opt.sel{background:var(--gold-soft);border-color:var(--gold);color:#0E1D38}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.mg div{display:flex;flex-direction:column;gap:8px}.mg .opt{margin:0;font-size:12.5px;padding:10px 11px;justify-content:center;text-align:center}
+.fb{text-align:center;font-weight:800;margin-top:10px;min-height:22px}
+.ring{width:130px;height:130px;border-radius:50%;margin:6px auto 14px;display:flex;align-items:center;justify-content:center}
+.ring div{width:100px;height:100px;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:var(--navy)}
+.ring small{font-size:11px;font-weight:600;color:var(--ink-soft)}
+.prog{display:none;background:linear-gradient(135deg,#0E1D38,#3b2a6e);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:12px}
+body.super .prog{display:block}.prog b{font-size:15px}.prog span{font-size:12px;opacity:.85;display:block;margin-top:2px}
+.prog .bar{height:10px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin-top:10px}.prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#C6962E,#ffe08a);border-radius:99px;transition:width .4s}
+body.super #view-tugas .task{border-left:4px solid var(--gold);border-radius:14px;padding:14px}
+body.super #view-tugas .task.done{border-left-color:#3aa655}
+body.super #view-tugas .task input{appearance:none;-webkit-appearance:none;width:24px;height:24px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0}
+body.super #view-tugas .task input:checked{background:#3aa655;border-color:#3aa655}
+body.super #view-tugas .task input:checked::after{content:"✓";color:#fff;font-size:14px;font-weight:700}
+body.super #view-tugas .add input{border:2px solid var(--gold);border-radius:14px}
+body.super #view-tugas .add button{background:linear-gradient(120deg,#C6962E,#f0c860);border-radius:14px}
+body.super .section-title{color:var(--gold);display:flex;align-items:center;gap:8px}
+body.super .section-title::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:2px}
+.promo{display:flex;align-items:center;gap:10px;background:linear-gradient(120deg,#fff3d1,#f7e2a0);border:1px dashed var(--gold);color:#5a4210;border-radius:14px;padding:11px 14px;margin-bottom:12px;font-size:12.5px;line-height:1.5;font-weight:600}
+.promo .pe{font-size:22px;flex-shrink:0}
+.promo.mini{justify-content:center;text-align:center;margin:14px 0 0;font-size:11.5px;padding:9px 12px}
+body.super .promo{display:none}
+.premium{display:flex;gap:10px;align-items:center;background:var(--today-bg);border:1px dashed var(--gold);border-radius:14px;padding:12px 14px;font-size:12.5px;line-height:1.5;margin:0 0 12px;color:var(--ink);cursor:pointer}
+.premium .gem{font-size:24px;flex-shrink:0}
+body.super .premium{display:none}
+body.super main{background:radial-gradient(circle at 100% 0,rgba(198,150,46,.14),transparent 45%),radial-gradient(circle at 0 100%,rgba(90,60,160,.12),transparent 50%)}
+body.super .info-card{border-radius:18px;box-shadow:0 3px 10px rgba(22,42,77,.1)}
+body.super .brief{background:linear-gradient(135deg,#0E1D38,#3b2a6e);color:#fff;border:none}
+body.super .brief b{color:#ffe08a}
+#dayList .day-card:nth-child(1){--a:#e05d5d}#dayList .day-card:nth-child(2){--a:#e08a3c}#dayList .day-card:nth-child(3){--a:#d6b12e}#dayList .day-card:nth-child(4){--a:#3aa655}#dayList .day-card:nth-child(5){--a:#3b82d6}#dayList .day-card:nth-child(6){--a:#8b5cd6}
+body.super .day-card{border-left:6px solid var(--a);border-radius:16px;box-shadow:0 3px 10px rgba(22,42,77,.1)}
+body.super .day-card.today{box-shadow:0 0 0 2px rgba(198,150,46,.45)}
+body.super .day-name{color:var(--a)}
+body.super .subj-dot{background:var(--a)}
+body.super .subj-short{background:var(--line);color:var(--ink);font-weight:700;padding:2px 9px;border-radius:999px}
+body.super .subj-item:active{background:var(--today-bg)}
+body.super .hero{border-radius:20px;padding:22px 18px;background:linear-gradient(135deg,#0E1D38,#3b2a6e)}
+body.super .hero .nm{font-size:26px}body.super .hero .cd{font-size:36px}
+body.super .pray-row{border-radius:14px;border-left:5px solid var(--line)}
+body.super .pray-row.next{border-left-color:var(--gold)}
+body.super .pray-row:nth-child(1) span::before{content:"🌌  "}body.super .pray-row:nth-child(2) span::before{content:"🌅  "}body.super .pray-row:nth-child(3) span::before{content:"🌄  "}body.super .pray-row:nth-child(4) span::before{content:"☀️  "}body.super .pray-row:nth-child(5) span::before{content:"🌤️  "}body.super .pray-row:nth-child(6) span::before{content:"🌇  "}body.super .pray-row:nth-child(7) span::before{content:"🌙  "}
+body.super .btn{border-radius:14px}
+body.super .btn.on{background:linear-gradient(120deg,#C6962E,#f0c860)}
+body.super .year-label{background:linear-gradient(90deg,#C6962E,#f0c860);color:#0E1D38;border:none;border-radius:10px;padding:7px 12px;margin-top:16px;margin-bottom:6px}
+body.super .month-label{color:var(--gold)}
+body.super .hol-item{border-radius:16px}
+body.super .hol-item.nat{border-left:5px solid #e05d5d}body.super .hol-item.cb{border-left:5px solid #2a9d8f}
+body.super .hol-date{background:linear-gradient(145deg,#162A4D,#3b2a6e);border-radius:12px;padding:7px 0}
+body.super .hol-item.cb .hol-date{background:linear-gradient(145deg,#1f6f8b,#2a9d8f)}
+body.super .hol-date .d{color:#fff}body.super .hol-date .m{color:var(--gold-soft)}
+body.super .next-pill{background:linear-gradient(120deg,#C6962E,#f0c860);color:#0E1D38}
+body.super #friendList{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+body.super .friend{margin:0;border-radius:16px;padding:12px}
+body.super .friend i{width:34px;height:34px;font-size:14px;color:#fff;background:linear-gradient(145deg,hsl(var(--h,40),65%,50%),hsl(var(--h,40),60%,32%))}
+body.super .quote{background:var(--card);border:1px dashed var(--gold);border-radius:14px;padding:12px;margin-top:14px}
+body.super .big-crest{width:76px;height:76px;background:linear-gradient(145deg,#162A4D,#3b2a6e);color:#ffe08a;box-shadow:0 0 0 4px rgba(198,150,46,.4)}
+body.super nav button.active{color:var(--gold)}
+body.super nav button.active::before{content:"";position:absolute;top:0;left:25%;right:25%;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#C6962E,#f0c860)}
+body.super nav button{position:relative}
+.fx{position:fixed;inset:0;z-index:50;pointer-events:none;overflow:hidden}
+.fx-flash{position:absolute;inset:0;background:radial-gradient(circle,rgba(255,230,150,.95),rgba(198,150,46,0) 70%);animation:fxf 1s ease-out forwards}
+@keyframes fxf{from{opacity:1}to{opacity:0}}
+.fx-title{position:absolute;left:50%;top:38%;font-size:32px;font-weight:900;color:#fff;text-align:center;white-space:nowrap;text-shadow:0 0 14px #C6962E;animation:fxt 2.6s ease forwards}
+@keyframes fxt{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}28%{transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.1)}}
+.piece{position:absolute;top:-40px;animation:fxp linear forwards;will-change:transform}
+@keyframes fxp{to{transform:translateY(115vh) rotate(720deg)}}
+.login{position:fixed;inset:0;z-index:60;background:linear-gradient(135deg,#0E1D38,#3b2a6e);display:none;align-items:center;justify-content:center;padding:24px}.login.show{display:flex}
+.lcard{background:var(--card);border-radius:20px;padding:26px 20px;width:100%;max-width:380px;text-align:center}
+.lcard .big-crest{margin-bottom:10px}.lcard h2{margin:0 0 4px;font-size:18px;color:var(--navy)}.lcard p{margin:0 0 14px;font-size:12.5px;color:var(--ink-soft)}
+.lmsg{min-height:18px;font-size:12.5px;color:#d25a5a;margin-top:6px}
+.ulist{display:flex;flex-direction:column;gap:8px;margin:10px 0}.ulist .friend{margin:0}.ulist .friend span{flex:1;word-break:break-word}.ulist button{border:none;background:none;font-size:16px;color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){.piece,.egg{animation:none}}
+@media (prefers-color-scheme:dark){:root{--paper:#11151D;--card:#1A2030;--ink:#EDEFF4;--ink-soft:#9AA3B5;--line:#2A3246;--today-bg:#241C10;--navy:#8FB0E8}
+header,.hero{--navy:#162A4D}.hero,.btn{color:#fff}.btn:not(.on):not(.wa):not(.mail){background:#2A4A80}.btn.mail{color:var(--navy-deep)}nav{background:#1A2030}.friend i,.big-crest{background:#2A3246}.opt.sel{color:#0E1D38}}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-row"><div class="crest">S2B</div><div><div class="school">SMPN 2 BONDOWOSO</div><div class="kelas">Kelas VIII A</div></div></div>
+  <div class="head-sub" id="todayLabel">Memuat tanggal…</div><div class="head-sub" id="meLabel" style="margin-top:3px;color:var(--gold-soft)"></div>
+  <button class="egg" id="egg" aria-label="Rahasia">💎</button>
+</header>
+<main>
+  <section class="view active" id="view-jadwal"><div class="info-card brief" id="brief"></div><div class="premium"><span class="gem">💎</span><span>Mau fitur lebih banyak &amp; tampilan <b>Premium</b>? Upgrade ke Premium dengan <b>klik emoticon berlian 💎</b> di pojok kanan atas.</span></div><div class="promo"><span class="pe">💎</span><span>Ingin fitur lebih banyak dan tampilan <b>Premium</b>? Upgrade ke Premium dengan klik emoticon berlian 💎 di pojok kanan atas.</span></div><div class="section-title">Jadwal Pelajaran Mingguan</div><div id="dayList"></div></section>
+
+  <section class="view" id="view-sholat">
+    <div class="section-title">Jadwal Sholat · Bondowoso</div>
+    <div class="hero"><small>Menuju waktu</small><div class="nm" id="nextName">–</div><div class="cd" id="nextCd">--:--:--</div></div>
+    <div id="prayList"></div>
+    <button class="btn" id="adzanBtn">🔔 Pengingat Adzan: Mati</button>
+    <div class="note">Waktu dihitung otomatis untuk Bondowoso (WIB) dengan metode Kemenag RI, bisa selisih 1–2 menit dari jadwal masjid. Pengingat hanya bunyi saat aplikasi ini sedang dibuka.</div>
+  </section>
+
+  <section class="view" id="view-tugas">
+    <div class="section-title">PR &amp; Tugas</div>
+    <div class="add"><input id="tIn" placeholder="Tulis PR atau tugas…" maxlength="80"><button id="tAdd">Tambah</button></div>
+    <div class="prog"><b id="pT"></b><span id="pS"></span><div class="bar"><i id="pB"></i></div></div><div id="tList"></div><div class="note" id="tNote"></div><div style="margin-top:12px"><div class="premium"><span class="gem">💎</span><span>Mau fitur lebih banyak &amp; tampilan <b>Premium</b>? Upgrade ke Premium dengan <b>klik emoticon berlian 💎</b> di pojok kanan atas.</span></div></div><div class="promo mini"><span>Ingin fitur lebih banyak dan tampilan <b>Premium</b>? Upgrade ke Premium dengan klik emoticon berlian 💎 di pojok kanan atas.</span></div>
+  </section>
+
+  <section class="view" id="view-libur"><div class="section-title">Hari Libur &amp; Cuti Bersama 2026–2027</div><div id="holList"></div></section>
+
+  <section class="view" id="view-teman">
+    <div class="section-title">Teman Daffa</div>
+    <div id="friendList"></div>
+    <div class="promo mini"><span>Ingin fitur lebih banyak dan tampilan <b>Premium</b>? Upgrade ke Premium dengan klik emoticon berlian 💎 di pojok kanan atas.</span></div><div class="quote">“agar Daffa gak lupa sama temannya sendiri -_-”</div>
+  </section>
+
+  <section class="view" id="view-kuis">
+    <div class="section-title">Kuis Super Friends ✨</div>
+    <div id="qHome"><div class="note" style="margin-bottom:12px">Pilih mapel: 20 soal (10 biasa, 5 pilihan ganda, 5 menjodohkan).</div><div class="chips" id="chips"></div></div>
+    <div id="qBox" style="display:none"></div>
+  </section>
+
+  <section class="view" id="view-info">
+    <div class="info-card"><div class="big-crest">S2B</div><h2>SMPN 2 Bondowoso</h2><p>Kelas VIII A</p></div>
+    <div class="promo"><span class="pe">💎</span><span>Ingin fitur lebih banyak dan tampilan <b>Premium</b>? Upgrade ke Premium dengan klik emoticon berlian 💎 di pojok kanan atas.</span></div><div class="premium"><span class="gem">💎</span><span>Mau fitur lebih banyak &amp; tampilan <b>Premium</b>? Upgrade ke Premium dengan <b>klik emoticon berlian 💎</b> di pojok kanan atas.</span></div>
+    <div class="info-card"><h2>👤 Akunku</h2><p id="infoMe" style="margin-bottom:10px"></p><button class="btn" id="bRen">✏️ Ganti Nama</button><button class="btn wa" id="bShare">📤 Bagikan Info ke Developer</button><button class="btn on" id="bUsers">🔒 Daftar Pengguna Aplikasi</button></div>
+    <div class="info-card">
+      <h2>💬 Beri Saran</h2><p style="margin-bottom:10px">Ada ide atau masukan untuk aplikasi ini? Kirim langsung ke developer.</p>
+      <a class="btn wa" href="https://wa.me/6285151833180?text=Halo%20Daffa%2C%20saya%20mau%20memberi%20saran%20untuk%20aplikasi%20Jadwal%20SMPN%202%20Bondowoso%3A%20" target="_blank" rel="noopener">WhatsApp · +62 851-5183-3180</a>
+      <a class="btn mail" href="mailto:ubaydillahdaffa7@gmail.com?subject=Saran%20Aplikasi%20Jadwal%20SMPN%202%20Bondowoso&amp;body=Halo%20Daffa%2C%0A%0ASaran%20saya%3A%0A">Email · ubaydillahdaffa7@gmail.com</a>
+    </div>
+    <div class="info-card contact">
+      <h3>Hubungi Developer</h3>
+      <a href="https://wa.me/6285151833180">WhatsApp <span>+62 851-5183-3180</span></a>
+      <a href="mailto:ubaydillahdaffa7@gmail.com">Email <span>ubaydillahdaffa7@gmail.com</span></a>
+    </div>
+    <div class="info-card dev-card">Aplikasi info sekolah &amp; jadwal pelajaran<span class="name">Developer by:<br>𓆩 ᖽᐸɪղᘜ ༒ ᙃᴀ̷𝖿ᴢᴢ 𓆪</span></div>
+  </section>
+</main>
+<div class="login" id="login"><div class="lcard"><div class="big-crest">S2B</div><h2>Selamat datang! 👋</h2><p>Tulis namamu dulu supaya aplikasi mengenalimu.</p><input class="in" id="lIn" placeholder="Nama kamu…" maxlength="24" autocomplete="off"><div class="lmsg" id="lMsg"></div><button class="btn on" id="lBtn">Masuk</button></div></div>
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+<nav>
+  <button class="tab-btn active" data-view="jadwal"><span class="ic">📅</span>Jadwal</button>
+  <button class="tab-btn" data-view="sholat"><span class="ic">🕌</span>Sholat</button>
+  <button class="tab-btn" data-view="tugas"><span class="ic">📝</span>Tugas</button>
+  <button class="tab-btn tab-kuis" data-view="kuis"><span class="ic">🧠</span>Kuis</button>
+  <button class="tab-btn" data-view="libur"><span class="ic">🎉</span>Libur</button>
+  <button class="tab-btn" data-view="teman"><span class="ic">👥</span>Teman</button>
+  <button class="tab-btn" data-view="info"><span class="ic">ℹ️</span>Info</button>
+</nav>
+<script>
+(function(){
+var bulan=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+var hari=["Minggu","Senin","Selasa","Rabu","Kamis","Jum’at","Sabtu"];
+var $=function(i){return document.getElementById(i)};
+function pad(n){return (n<10?"0":"")+n}
+function wib(){return new Date(Date.now()+7*36e5)}
+function mk(c,t,f){var b=document.createElement("button");b.className=c;b.textContent=t;b.onclick=f;return b}
+function shuf(a){return a.slice().sort(function(){return Math.random()-.5})}
+
+/* ---------- MATERI & KUIS (Kelas VIII) ----------
+ b = 10 soal biasa (3 opsi) · p = 5 pilihan ganda (4 opsi) · j = 5 pasangan menjodohkan */
+var D={
+IPA:{m:"<b>Getaran &amp; Gelombang</b><ul class='mat'><li>Frekuensi f = n / t (satuan Hertz)</li><li>Periode T = t / n, dan T = 1 / f</li><li>Cepat rambat gelombang v = λ × f</li></ul><b>Tekanan</b><ul class='mat'><li>P = F / A (satuan Pascal)</li><li>Makin luas bidang, tekanan makin kecil</li></ul>",
+b:[["Rumus frekuensi adalah…",["f = n / t","f = t / n","f = n × t"],0],["Satuan tekanan dalam SI adalah…",["Newton","Pascal","Joule"],1],["Periode adalah waktu untuk…",["Satu getaran","Seribu getaran","Setengah getaran"],0],["Satuan frekuensi adalah…",["Watt","Newton","Hertz"],2],["Bunyi termasuk gelombang…",["Transversal","Longitudinal","Elektromagnetik"],1],["Organ yang menyerap sari makanan…",["Lambung","Usus halus","Kerongkongan"],1],["Pembuluh darah dari jantung ke seluruh tubuh…",["Vena","Kapiler","Arteri"],2],["Mata yang tidak bisa melihat jauh disebut…",["Miopi","Hipermetropi","Presbiopi"],0],["Cermin cekung bersifat…",["Menyebarkan cahaya","Mengumpulkan cahaya","Menyerap cahaya"],1],["Makin luas bidang tekan, tekanan makin…",["Besar","Tetap","Kecil"],2]],
+p:[["Benda bergetar 30 kali dalam 10 s, frekuensinya…",["30 Hz","3 Hz","300 Hz","0,3 Hz"],1],["λ = 2 m dan f = 5 Hz, maka v = …",["7 m/s","2,5 m/s","10 m/s","3 m/s"],2],["Rumus tekanan hidrostatis…",["F / A","ρ × g × h","m × a","ρ × V"],1],["Pewarna alami makanan…",["Rhodamin B","Kunyit","Boraks","Metanil yellow"],1],["Fungsi sel darah merah…",["Melawan kuman","Membekukan darah","Mengangkut oksigen","Mencerna makanan"],2]],
+j:[["Getaran","Gerak bolak-balik"],["Frekuensi","Jumlah getaran per detik"],["Arteri","Pembuluh dari jantung"],["Vena","Pembuluh menuju jantung"],["Pascal","Satuan tekanan"]]},
+PKN:{m:"<b>Norma &amp; Hak Asasi Manusia</b><ul class='mat'><li>Hak dan kewajiban warga negara diatur dalam UUD 1945</li><li>HAM diatur dalam Pasal 28A–28J UUD 1945</li><li>Semboyan negara: Bhinneka Tunggal Ika, artinya berbeda-beda tetapi tetap satu</li></ul>",
+b:[["Semboyan negara Indonesia adalah…",["Tut Wuri Handayani","Bhinneka Tunggal Ika","Garuda Pancasila"],1],["HAM dalam UUD 1945 diatur pada Pasal…",["28A–28J","1–10","33–34"],0],["Sila ke-3 Pancasila…",["Persatuan Indonesia","Kemanusiaan yang adil dan beradab","Keadilan sosial"],0],["Lambang negara Indonesia…",["Burung Merpati","Garuda Pancasila","Elang Jawa"],1],["Contoh kewajiban siswa…",["Terlambat","Menaati tata tertib","Menyontek"],1],["Hak pendidikan diatur Pasal…",["31 UUD 1945","1 UUD 1945","5 UUD 1945"],0],["Aturan yang dibuat negara disebut norma…",["Agama","Kesopanan","Hukum"],2],["Musyawarah bertujuan…",["Mencapai mufakat","Memaksakan kehendak","Menang sendiri"],0],["Sikap toleran adalah…",["Menghina","Menghormati perbedaan","Mengucilkan"],1],["Hari Lahir Pancasila…",["1 Juni","17 Agustus","28 Oktober"],0]],
+p:[["Pembukaan UUD 1945 terdiri atas … alinea",["4","3","5","2"],0],["Kebebasan beragama diatur pasal…",["27","29","31","33"],1],["Contoh pelanggaran HAM…",["Gotong royong","Musyawarah","Penganiayaan","Kerja bakti"],2],["Lembaga pembuat undang-undang…",["MA","BPK","KPK","DPR"],3],["Sumpah Pemuda diikrarkan…",["20 Mei 1908","28 Oktober 1928","1 Juni 1945","17 Agustus 1945"],1]],
+j:[["Hak","Sesuatu yang diterima"],["Kewajiban","Sesuatu yang harus dilakukan"],["Pasal 28A–28J","Pengaturan HAM"],["Bhinneka Tunggal Ika","Berbeda tetapi tetap satu"],["Musyawarah","Mencari mufakat"]]},
+MTK:{m:"<b>Teorema Pythagoras</b><ul class='mat'><li>a² + b² = c² (c = sisi miring)</li><li>Tripel Pythagoras: 3-4-5, 5-12-13</li></ul><b>Lingkaran</b><ul class='mat'><li>Keliling = 2πr, Luas = πr²</li></ul><b>SPLDV</b><ul class='mat'><li>Dicari dengan eliminasi atau substitusi</li></ul>",
+b:[["Segitiga siku-siku bersisi 3 dan 4, sisi miringnya…",["5","6","7"],0],["Jika x + y = 5 dan x − y = 1, maka x = …",["2","3","4"],1],["Rumus keliling lingkaran…",["πr²","2πr","πr"],1],["Luas lingkaran r = 7 (π = 22/7)…",["44","154","308"],1],["Tripel Pythagoras…",["2-3-4","6-7-8","5-12-13"],2],["Banyak sisi kubus…",["8","12","6"],2],["Banyak rusuk kubus…",["12","6","8"],0],["Volume balok…",["p + l + t","p × l × t","2(p + l)"],1],["Diameter 14, jari-jarinya…",["7","14","28"],0],["Titik (3, 4), ordinatnya…",["3","4","7"],1]],
+p:[["Sisi siku 5 dan 12, sisi miringnya…",["17","15","13","14"],2],["2x + y = 7 dan x = 2, maka y = …",["2","4","3","5"],2],["Luas permukaan kubus s = 3…",["27","36","18","54"],3],["Volume kubus s = 4…",["16","64","48","12"],1],["Keliling lingkaran d = 14 (π = 22/7)…",["22","88","44","154"],2]],
+j:[["Kubus","6 sisi sama besar"],["Balok","Volume p × l × t"],["Pythagoras","a² + b² = c²"],["Diameter","2 × jari-jari"],["Absis","Nilai sumbu x"]]},
+TIK:{m:"<b>Komponen Komputer</b><ul class='mat'><li>Hardware: perangkat keras (CPU, monitor, keyboard)</li><li>Software: perangkat lunak (sistem operasi, aplikasi)</li><li>Brainware: pengguna komputer</li></ul><b>Etika digital:</b> jaga data pribadi, jangan sebar hoaks.",
+b:[["CPU sering disebut sebagai…",["Mata komputer","Otak komputer","Kaki komputer"],1],["Contoh software adalah…",["Mouse","Microsoft Word","Printer"],1],["Perangkat input…",["Keyboard","Monitor","Speaker"],0],["Perangkat output…",["Scanner","Mouse","Printer"],2],["Penyimpan data portabel…",["Flashdisk","Webcam","Joystick"],0],["Contoh browser…",["Excel","Chrome","Paint"],1],["Hoaks adalah…",["Berita bohong","Berita benar","Iklan"],0],["Ekstensi file Word…",[".xlsx",".docx",".jpg"],1],["Ctrl + C berfungsi untuk…",["Menempel","Menyalin","Memotong"],1],["Password yang baik…",["123456","Kombinasi huruf, angka, simbol","Nama sendiri"],1]],
+p:[["Contoh sistem operasi…",["Photoshop","Chrome","Windows","Excel"],2],["Aplikasi pengolah angka…",["Microsoft Word","Microsoft PowerPoint","Microsoft Excel","Paint"],2],["Fungsi RAM…",["Menyimpan permanen","Memori sementara","Mencetak","Menampilkan gambar"],1],["Aplikasi untuk presentasi…",["Microsoft Excel","Microsoft PowerPoint","Notepad","Kalkulator"],1],["Perilaku etis di internet…",["Menyebar hoaks","Perundungan siber","Menghormati orang lain","Membajak"],2]],
+j:[["Hardware","Perangkat keras"],["Software","Perangkat lunak"],["Brainware","Pengguna komputer"],["Keyboard","Perangkat input"],["Monitor","Perangkat output"]]},
+SBK:{m:"<b>Seni Rupa</b><ul class='mat'><li>2 dimensi: lukisan, gambar, poster</li><li>3 dimensi: patung, keramik, kriya</li><li>Warna primer: merah, kuning, biru</li><li>Warna sekunder hasil campuran dua warna primer</li></ul>",
+b:[["Contoh karya seni rupa 3 dimensi…",["Lukisan","Patung","Poster"],1],["Warna primer adalah…",["Merah, kuning, biru","Hijau, ungu, oranye","Hitam, putih, abu"],0],["Contoh seni rupa 2 dimensi…",["Patung","Gambar","Keramik"],1],["Hijau berasal dari campuran…",["Merah + kuning","Merah + biru","Kuning + biru"],2],["Angklung berasal dari…",["Jawa Barat","Papua","Aceh"],0],["Tari Saman berasal dari…",["Bali","Aceh","Papua"],1],["Kriya adalah…",["Musik","Lukisan digital","Kerajinan tangan"],2],["Tempo dalam musik adalah…",["Cepat lambatnya lagu","Keras lemahnya lagu","Warna suara"],0],["Dinamika dalam musik adalah…",["Cepat lambatnya lagu","Keras lemahnya lagu","Warna suara"],1],["Contoh seni rupa murni…",["Kursi","Lukisan","Piring"],1]],
+p:[["Warna sekunder…",["Merah","Kuning","Hijau","Biru"],2],["Wayang kulit berasal dari…",["Papua","Jawa","Kalimantan","Sumatera Barat"],1],["Teknik arsir menggunakan…",["Titik","Tempel","Garis sejajar","Cetak"],2],["Alat musik ritmis…",["Gitar","Kendang","Piano","Seruling"],1],["Tari Pendet berasal dari…",["Aceh","Jawa","Papua","Bali"],3]],
+j:[["Lukisan","Seni rupa 2 dimensi"],["Patung","Seni rupa 3 dimensi"],["Merah + kuning","Oranye"],["Angklung","Alat musik bambu"],["Tari Saman","Aceh"]]},
+IPS:{m:"<b>Interaksi Sosial</b><ul class='mat'><li>Syaratnya: kontak sosial dan komunikasi</li></ul><b>Kolonialisme</b><ul class='mat'><li>VOC dibentuk tahun 1602</li><li>Proklamasi kemerdekaan: 17 Agustus 1945</li></ul>",
+b:[["VOC dibentuk pada tahun…",["1602","1815","1945"],0],["Syarat terjadinya interaksi sosial…",["Kontak sosial dan komunikasi","Hanya kontak fisik","Hanya uang"],0],["Proklamasi kemerdekaan RI…",["28 Oktober 1928","17 Agustus 1945","20 Mei 1908"],1],["Tanam Paksa digagas oleh…",["Daendels","Raffles","Van den Bosch"],2],["Jalan Raya Pos dibangun masa…",["Daendels","Raffles","Van den Bosch"],0],["Contoh interaksi asosiatif…",["Pertikaian","Kerja sama","Konflik"],1],["Orang yang memakai barang disebut…",["Produsen","Konsumen","Distributor"],1],["Indonesia terletak di antara benua…",["Asia dan Australia","Eropa dan Afrika","Amerika dan Asia"],0],["Indonesia terletak di antara samudra…",["Atlantik dan Arktik","Hindia dan Pasifik","Hindia dan Atlantik"],1],["Barter adalah…",["Pinjam uang","Jual beli uang","Tukar barang dengan barang"],2]],
+p:[["Perang Diponegoro terjadi…",["1900–1905","1825–1830","1945–1949","1602–1610"],1],["Pangeran Diponegoro berasal dari…",["Aceh","Makassar","Yogyakarta","Banten"],2],["Contoh interaksi disosiatif…",["Kerja sama","Akomodasi","Asimilasi","Persaingan"],3],["Cultuurstelsel disebut juga…",["Politik Etis","Tanam Paksa","Kerja sama","Perang Padri"],1],["Perang Padri dipimpin…",["Imam Bonjol","Pattimura","Teuku Umar","Sultan Hasanuddin"],0]],
+j:[["Produsen","Pembuat barang"],["Konsumen","Pemakai barang"],["Barter","Tukar barang"],["VOC","Kongsi dagang Belanda"],["Imam Bonjol","Perang Padri"]]},
+BK:{m:"<b>Mengenal Diri &amp; Pergaulan Sehat</b><ul class='mat'><li>Kenali kelebihan dan kekuranganmu</li><li>Manajemen waktu: buat jadwal belajar dan istirahat</li><li>Jika melihat perundungan (bullying), laporkan ke guru</li></ul>",
+b:[["Jika melihat bullying sebaiknya…",["Ikut menertawakan","Melaporkan ke guru","Diam saja"],1],["Contoh manajemen waktu yang baik…",["Membuat jadwal belajar","Menunda semua tugas","Begadang tiap hari"],0],["Kelebihan diri disebut…",["Hambatan","Potensi","Kelemahan"],1],["Teman yang positif…",["Mengajak bolos","Mengajak merokok","Mengajak belajar"],2],["Saat marah sebaiknya…",["Menarik napas dalam","Memukul","Berteriak"],0],["Cita-cita dicapai dengan…",["Menunggu","Usaha dan doa","Mengeluh"],1],["Disiplin berarti…",["Bolos","Melanggar","Taat aturan"],2],["Berani menolak ajakan negatif disebut…",["Asertif","Agresif","Pasif"],0],["Mengelola stres dengan…",["Menyendiri terus","Istirahat dan olahraga","Marah ke orang"],1],["Empati adalah…",["Cuek","Iri","Merasakan perasaan orang lain"],2]],
+p:[["Contoh gaya belajar…",["Kimia","Fisik","Auditori","Finansial"],2],["Perundungan siber terjadi di…",["Kantin","Lapangan","Dunia maya","Kelas"],2],["Sikap terhadap kekurangan diri…",["Menyalahkan orang","Menerima dan memperbaiki","Menyerah","Menyembunyikan"],1],["Tujuan belajar kelompok…",["Menyontek","Bermain","Tidur","Saling membantu"],3],["Ciri teman yang baik…",["Suka mengadu domba","Pelit","Jujur dan peduli","Pembohong"],2]],
+j:[["Empati","Merasakan perasaan orang lain"],["Disiplin","Taat aturan"],["Asertif","Menolak dengan sopan"],["Bullying","Perundungan"],["Potensi","Kelebihan diri"]]},
+BIN:{m:"<b>Jenis Teks</b><ul class='mat'><li>Teks prosedur: berisi langkah-langkah melakukan sesuatu</li><li>Teks eksposisi: berisi pendapat disertai fakta (tesis, argumen, penegasan)</li></ul><b>Kata baku:</b> apotek, analisis, sistem, risiko.",
+b:[["Teks berisi langkah-langkah disebut teks…",["Prosedur","Narasi","Puisi"],0],["Kata baku yang benar…",["Apotik","Apotek","Apoteek"],1],["Struktur teks eksposisi…",["Orientasi, komplikasi, resolusi","Tesis, argumen, penegasan ulang","Bahan, langkah"],1],["Kata baku…",["Resiko","Risiko","Risco"],1],["Sinonim “indah”…",["Jelek","Kotor","Cantik"],2],["Antonim “rajin”…",["Malas","Giat","Tekun"],0],["Teks yang mengajak pembaca disebut…",["Deskripsi","Persuasi","Narasi"],1],["Kalimat tanya diakhiri tanda…",["Titik","Seru","Tanya"],2],["Huruf kapital dipakai pada…",["Awal kalimat","Tengah kata","Akhir kalimat"],0],["Puisi terdiri atas…",["Paragraf","Bait dan larik","Bab"],1]],
+p:[["Kata baku…",["Analisa","Analisis","Anilisis","Analasis"],1],["Teks pengalaman berurutan…",["Prosedur","Eksposisi","Narasi","Iklan"],2],["Imbuhan pada “menulis”…",["di-","me-","ter-","ber-"],1],["Gagasan utama paragraf ada di…",["Kalimat penjelas","Judul","Kalimat utama","Kata sambung"],2],["“Ia bagai singa” termasuk majas…",["Metafora","Hiperbola","Ironi","Simile"],3]],
+j:[["Prosedur","Langkah-langkah"],["Eksposisi","Pendapat dengan fakta"],["Narasi","Cerita berurutan"],["Sinonim","Persamaan kata"],["Antonim","Lawan kata"]]},
+PAI:{m:"<b>Rukun Iman (6)</b><ul class='mat'><li>Iman kepada Allah, malaikat, kitab, rasul, hari akhir, qada dan qadar</li><li>Malaikat Jibril bertugas menyampaikan wahyu</li></ul>",
+b:[["Jumlah rukun iman ada…",["5","6","7"],1],["Malaikat penyampai wahyu…",["Mikail","Jibril","Israfil"],1],["Jumlah rukun Islam…",["6","4","5"],2],["Kitab Nabi Musa AS…",["Taurat","Zabur","Injil"],0],["Kitab Nabi Daud AS…",["Injil","Zabur","Taurat"],1],["Malaikat pencatat amal…",["Malik","Ridwan","Raqib dan Atid"],2],["Malaikat penjaga neraka…",["Ridwan","Malik","Munkar"],1],["Shalat wajib sehari semalam…",["3 kali","6 kali","5 kali"],2],["Malaikat peniup sangkakala…",["Jibril","Israfil","Mikail"],1],["Rasul terakhir…",["Muhammad SAW","Isa AS","Musa AS"],0]],
+p:[["Termasuk rasul ulul azmi…",["Yunus","Nuh","Yusuf","Luqman"],1],["Ketetapan Allah disebut…",["Doa","Zakat","Takdir","Haji"],2],["Malaikat pembagi rezeki…",["Jibril","Mikail","Izrail","Israfil"],1],["Sifat rasul “jujur”…",["Amanah","Tabligh","Siddiq","Fathanah"],2],["Tabligh artinya…",["Jujur","Dipercaya","Cerdas","Menyampaikan"],3]],
+j:[["Jibril","Menyampaikan wahyu"],["Mikail","Membagi rezeki"],["Izrail","Mencabut nyawa"],["Israfil","Meniup sangkakala"],["Raqib","Mencatat amal baik"]]},
+BIG:{m:"<b>Simple Past Tense</b><ul class='mat'><li>Dipakai untuk kejadian yang sudah lewat</li><li>Verb 2: go → went, eat → ate, see → saw</li><li>Contoh: She went to school yesterday.</li></ul>",
+b:[["She ___ to school yesterday.",["go","went","goes"],1],["Past form dari “eat” adalah…",["ate","eaten","eated"],0],["Past form dari “see”…",["seen","saw","seed"],1],["“Book” artinya…",["Pena","Meja","Buku"],2],["Past form dari “buy”…",["buyed","bought","buyt"],1],["“Good morning” artinya…",["Selamat pagi","Selamat malam","Selamat siang"],0],["I ___ a student.",["is","are","am"],2],["They ___ playing football.",["is","are","am"],1],["Lawan kata “big”…",["Large","Huge","Small"],2],["Past form dari “write”…",["wrote","writed","written"],0]],
+p:[["Past form dari “go”…",["gone","goed","went","going"],2],["Yesterday, I ___ football.",["play","played","plays","playing"],1],["Past form dari “take”…",["taken","taked","takes","took"],3],["She ___ not go to school yesterday.",["does","do","did","is"],2],["Past form dari “come”…",["comed","came","comes","coming"],1]],
+j:[["go","went"],["eat","ate"],["see","saw"],["buy","bought"],["write","wrote"]]},
+Jawa:{m:"<b>Unggah-ungguh Basa</b><ul class='mat'><li>Ngoko: akrab dengan teman sebaya</li><li>Krama: sopan untuk orang yang lebih tua</li><li>Kula = saya, panjenengan = Anda (krama)</li><li>Aksara Jawa dasar: 20 huruf (Hanacaraka)</li></ul>",
+b:[["“Kula” dalam bahasa Indonesia artinya…",["Saya","Kamu","Dia"],0],["Aksara Jawa dasar berjumlah…",["20","25","30"],0],["“Panjenengan” artinya…",["Saya","Dia","Anda"],2],["Ngoko dipakai kepada…",["Guru","Teman sebaya","Orang tua"],1],["“Matur nuwun” artinya…",["Terima kasih","Selamat pagi","Maaf"],0],["“Sugeng enjing” artinya…",["Selamat malam","Selamat pagi","Selamat siang"],1],["“Omah” artinya…",["Pasar","Sekolah","Rumah"],2],["“Mangan” artinya…",["Makan","Minum","Tidur"],0],["“Turu” artinya…",["Makan","Tidur","Mandi"],1],["“Simbah” artinya…",["Ayah","Kakak","Kakek/nenek"],2]],
+p:[["“Banyu” artinya…",["Api","Air","Angin","Tanah"],1],["“Geni” artinya…",["Air","Angin","Tanah","Api"],3],["Aksara Jawa disebut…",["Dewanagari","Hijaiyah","Hanacaraka","Latin"],2],["“Pinten” artinya…",["Siapa","Berapa","Kapan","Dimana"],1],["“Mlaku” artinya…",["Berlari","Duduk","Berdiri","Berjalan"],3]],
+j:[["Kula","Saya"],["Panjenengan","Anda"],["Omah","Rumah"],["Mangan","Makan"],["Matur nuwun","Terima kasih"]]},
+PJOK:{m:"<b>Bola Voli</b><ul class='mat'><li>Satu tim terdiri dari 6 pemain</li><li>Teknik dasar: passing bawah, passing atas, servis, smash</li></ul><b>Atletik:</b> lari jarak pendek disebut sprint.",
+b:[["Pemain voli dalam satu tim di lapangan…",["5","6","7"],1],["Lari jarak pendek disebut…",["Maraton","Sprint","Estafet"],1],["Passing bawah memakai…",["Lengan bawah","Jari","Kaki"],0],["Pemain sepak bola dalam satu tim…",["9","7","11"],2],["Tolak peluru termasuk nomor…",["Lari","Lempar","Lompat"],1],["Tujuan pemanasan…",["Mencegah cedera","Membuat lelah","Tidur"],0],["Denyut nadi diukur di…",["Lutut","Pergelangan tangan","Telinga"],1],["Sumber protein…",["Gula","Garam","Telur"],2],["Pemain basket di lapangan per tim…",["5","6","11"],0],["Tahapan lompat jauh…",["Hanya lari","Awalan, tumpuan, melayang, mendarat","Hanya melempar"],1]],
+p:[["Servis dalam voli berguna untuk…",["Menangkis","Mengumpan","Memulai permainan","Menyerang akhir"],2],["Pelari dalam satu regu estafet…",["3","4","5","2"],1],["Lari 100 meter disebut…",["Maraton","Lintas alam","Sprint","Estafet"],2],["Alat bulu tangkis…",["Bola dan gawang","Raket dan shuttlecock","Tongkat","Peluru"],1],["Pertolongan cedera RICE, huruf R = …",["Run","Roll","Rest","Rush"],2]],
+j:[["Bola voli","6 pemain"],["Sprint","Lari jarak pendek"],["Estafet","Lari beranting"],["Tolak peluru","Nomor lempar"],["Pemanasan","Mencegah cedera"]]},
+BTQ:{m:"<b>Hukum Nun Mati &amp; Tanwin</b><ul class='mat'><li>Izhar: dibaca jelas</li><li>Idgham: dilebur (bighunnah: ya, nun, mim, wau)</li><li>Iqlab: nun mati bertemu ba, dibaca mim</li><li>Ikhfa: dibaca samar</li></ul>",
+b:[["Nun mati bertemu huruf ba hukumnya…",["Izhar","Iqlab","Ikhfa"],1],["Idgham bighunnah hurufnya…",["Ya, nun, mim, wau","Ba, ta, tsa","Ra, lam"],0],["Izhar dibaca…",["Samar","Dilebur","Jelas"],2],["Ikhfa dibaca…",["Jelas","Samar","Dilebur"],1],["Iqlab diganti bunyi…",["Mim","Nun","Ba"],0],["Huruf izhar halqi berjumlah…",["5","7","6"],2],["Huruf idgham bilaghunnah…",["Ya dan mim","Ba dan ta","Lam dan ra"],2],["Huruf ikhfa berjumlah…",["6","15","4"],1],["Jenis tanwin ada…",["2","3","4"],1],["Alif lam syamsiyah dibaca…",["Lebur","Jelas","Samar"],0]],
+p:[["Nun mati bertemu ya hukumnya…",["Izhar","Idgham bighunnah","Iqlab","Ikhfa"],1],["Nun mati bertemu ra hukumnya…",["Izhar","Iqlab","Idgham bilaghunnah","Ikhfa"],2],["Nun mati bertemu hamzah hukumnya…",["Idgham","Iqlab","Ikhfa","Izhar"],3],["Nun mati bertemu kaf hukumnya…",["Izhar","Ikhfa","Iqlab","Idgham"],1],["Idgham artinya…",["Jelas","Samar","Mengganti","Memasukkan/melebur"],3]],
+j:[["Izhar","Jelas"],["Idgham","Dilebur"],["Iqlab","Diganti mim"],["Ikhfa","Samar"],["Tanwin","Bunyi an, in, un"]]}
+};
+
+/* ---------- JADWAL PELAJARAN ---------- */
+var jadwal=[
+ ["Senin",[["IPA","Ilmu Pengetahuan Alam"],["PKN","Pendidikan Pancasila & Kewarganegaraan"],["MTK","Matematika"]]],
+ ["Selasa",[["TIK","Teknologi Informasi & Komunikasi"],["IPA","Ilmu Pengetahuan Alam"],["SBK","Seni Budaya & Keterampilan"]]],
+ ["Rabu",[["IPS","Ilmu Pengetahuan Sosial"],["BK","Bimbingan Konseling"],["BIN","Bahasa Indonesia"],["PAI","Pendidikan Agama Islam"]]],
+ ["Kamis",[["BIG","Bahasa Inggris"],["IPS","Ilmu Pengetahuan Sosial"],["Jawa","Bahasa Daerah (Jawa)"],["BIN","Bahasa Indonesia"]]],
+ ["Jum’at",[["MTK","Matematika"],["BIN","Bahasa Indonesia"]]],
+ ["Sabtu",[["PJOK","Pendidikan Jasmani, Olahraga & Kesehatan"],["BTQ","Baca Tulis Al-Qur’an"],["BIG","Bahasa Inggris"]]]
+];
+var NM={};jadwal.forEach(function(d){d[1].forEach(function(m){NM[m[0]]=m[1]})});
+var w0=wib(),todayIdx=w0.getUTCDay();
+$("todayLabel").textContent=hari[todayIdx]+", "+w0.getUTCDate()+" "+bulan[w0.getUTCMonth()]+" "+w0.getUTCFullYear();
+jadwal.forEach(function(it){
+  var isT=hari[todayIdx]===it[0],card=document.createElement("div");
+  card.className="day-card"+(isT?" today":"");
+  var head=document.createElement("div");head.className="day-head";
+  head.innerHTML='<div><span class="day-name">'+it[0]+'</span>'+(isT?'<span class="day-badge">Hari ini</span>':'')+'</div><div style="display:flex;align-items:center;gap:8px"><span class="day-count">'+it[1].length+' mapel</span><span class="chev">▾</span></div>';
+  var list=document.createElement("div");list.className="subj-list";
+  it[1].forEach(function(m){var r=document.createElement("div");r.className="subj-item";r.innerHTML='<span class="subj-dot"></span><span class="subj-name">'+m[1]+'</span><span class="subj-short">'+m[0]+'</span><span class="subj-book">📖</span>';
+    r.addEventListener("click",function(){if(document.body.classList.contains("super"))openMat(m[0])});list.appendChild(r)});
+  head.addEventListener("click",function(){var o=card.classList.toggle("open");list.style.maxHeight=o?list.scrollHeight+"px":"0"});
+  card.appendChild(head);card.appendChild(list);$("dayList").appendChild(card);
+  if(isT){card.classList.add("open");setTimeout(function(){list.style.maxHeight=list.scrollHeight+"px"},60)}
+});
+
+/* ---------- LIBUR 2026–2027 (SKB 3 Menteri) ---------- */
+var raw=[
+"2026-01-01|N|Tahun Baru 2026 Masehi","2026-01-16|N|Isra Mi’raj Nabi Muhammad SAW","2026-02-16|C|Cuti Bersama Imlek","2026-02-17|N|Tahun Baru Imlek 2577",
+"2026-03-18|C|Cuti Bersama Hari Suci Nyepi","2026-03-19|N|Hari Suci Nyepi (Tahun Baru Saka 1948)","2026-03-20|C|Cuti Bersama Idul Fitri","2026-03-21|N|Idul Fitri 1447 H (hari ke-1)","2026-03-22|N|Idul Fitri 1447 H (hari ke-2)","2026-03-23|C|Cuti Bersama Idul Fitri","2026-03-24|C|Cuti Bersama Idul Fitri",
+"2026-04-03|N|Wafat Yesus Kristus","2026-04-05|N|Kebangkitan Yesus Kristus (Paskah)","2026-05-01|N|Hari Buruh Internasional","2026-05-14|N|Kenaikan Yesus Kristus","2026-05-15|C|Cuti Bersama Kenaikan Yesus Kristus",
+"2026-05-27|N|Idul Adha 1447 H","2026-05-28|C|Cuti Bersama Idul Adha","2026-05-31|N|Hari Raya Waisak 2570 BE","2026-06-01|N|Hari Lahir Pancasila","2026-06-16|N|1 Muharram, Tahun Baru Islam 1448 H",
+"2026-08-17|N|Hari Kemerdekaan RI","2026-08-25|N|Maulid Nabi Muhammad SAW","2026-12-24|C|Cuti Bersama Hari Natal","2026-12-25|N|Kelahiran Yesus Kristus (Natal)",
+"2027-01-01|N|Tahun Baru 2027 Masehi","2027-01-05|N|Isra Mi’raj Nabi Muhammad SAW 1448 H","2027-02-05|C|Cuti Bersama Imlek","2027-02-06|N|Tahun Baru Imlek 2578",
+"2027-03-08|N|Hari Suci Nyepi (Tahun Baru Saka 1949)","2027-03-09|C|Cuti Bersama Idul Fitri","2027-03-10|N|Idul Fitri 1448 H (hari ke-1)","2027-03-11|N|Idul Fitri 1448 H (hari ke-2)","2027-03-12|C|Cuti Bersama Idul Fitri","2027-03-15|C|Cuti Bersama Idul Fitri",
+"2027-03-25|C|Cuti Bersama Wafat Yesus Kristus","2027-03-26|N|Wafat Yesus Kristus","2027-03-28|N|Kebangkitan Yesus Kristus (Paskah)","2027-05-01|N|Hari Buruh Internasional","2027-05-06|N|Kenaikan Yesus Kristus",
+"2027-05-17|N|Idul Adha 1448 H","2027-05-18|C|Cuti Bersama Idul Adha","2027-05-19|C|Cuti Bersama Waisak","2027-05-20|N|Hari Raya Waisak 2571 BE","2027-06-01|N|Hari Lahir Pancasila","2027-06-06|N|1 Muharram, Tahun Baru Islam 1449 H",
+"2027-08-15|N|Maulid Nabi Muhammad SAW","2027-08-17|N|Hari Kemerdekaan RI","2027-12-24|C|Cuti Bersama Natal","2027-12-25|N|Kelahiran Yesus Kristus (Natal)","2027-12-26|N|Isra Mi’raj Nabi Muhammad SAW 1449 H"];
+var stamp=w0.getUTCFullYear()*10000+(w0.getUTCMonth()+1)*100+w0.getUTCDate(),nextDone=false,cy=0,cb=-1,hl=document.createDocumentFragment();
+raw.forEach(function(s){
+  var p=s.split("|"),dt=p[0].split("-"),y=+dt[0],b=+dt[1]-1,d=+dt[2],st=y*10000+(b+1)*100+d,nx=!nextDone&&st>=stamp;
+  if(nx)nextDone=true;
+  if(y!==cy){cy=y;cb=-1;var yl=document.createElement("div");yl.className="year-label";yl.textContent="Tahun "+y;hl.appendChild(yl)}
+  if(b!==cb){cb=b;var ml=document.createElement("div");ml.className="month-label";ml.textContent=bulan[b]+" "+y;hl.appendChild(ml)}
+  var r=document.createElement("div");r.className="hol-item"+(p[1]==="N"?" nat":" cb")+(nx?" next":"");
+  r.innerHTML='<div class="hol-date"><div class="d">'+d+'</div><div class="m">'+bulan[b].slice(0,3)+'</div></div><div class="hol-text"><div class="t">'+p[2]+'</div><div class="tag">'+(p[1]==="N"?"Libur Nasional":"Cuti Bersama")+'</div></div>'+(nx?'<span class="next-pill">Terdekat</span>':'');
+  hl.appendChild(r);
+});
+$("holList").appendChild(hl);
+
+/* ---------- RINGKASAN BESOK ---------- */
+(function(){
+  var tm=new Date(w0.getTime()+864e5),ti=tm.getUTCDay(),tst=tm.getUTCFullYear()*10000+(tm.getUTCMonth()+1)*100+tm.getUTCDate(),hol=null,nx=null,out="";
+  raw.forEach(function(s){var p=s.split("|"),n=+p[0].replace(/-/g,"");if(n===tst)hol=p[2];if(!nx&&p[1]==="N"&&n>=stamp)nx=p});
+  if(ti===0)out+="<b>Besok "+hari[ti]+"</b>, libur sekolah 🎉";
+  else if(hol)out+="<b>Besok libur:</b> "+hol+" 🎉";
+  else{var j=jadwal.filter(function(x){return x[0]===hari[ti]})[0];
+    out+="<b>Besok "+hari[ti]+":</b> "+j[1].map(function(m){return m[0]}).join(", ")}
+  if(nx){var q=nx[0].split("-"),dl=Math.round((Date.UTC(q[0],q[1]-1,q[2])-Date.UTC(w0.getUTCFullYear(),w0.getUTCMonth(),w0.getUTCDate()))/864e5);
+    out+="<br>Libur nasional terdekat: <b>"+nx[2]+"</b> ("+(dl===0?"hari ini":dl+" hari lagi")+")"}
+  $("brief").innerHTML=out;
+})();
+
+/* ---------- PR & TUGAS ---------- */
+var tugas=[];try{tugas=JSON.parse(localStorage.getItem("tugas")||"[]")}catch(e){}
+function saveT(){try{localStorage.setItem("tugas",JSON.stringify(tugas))}catch(e){}}
+function drawT(){
+  var l=$("tList");l.innerHTML="";
+  tugas.forEach(function(t,i){
+    var r=document.createElement("div");r.className="task"+(t.d?" done":"");
+    var c=document.createElement("input");c.type="checkbox";c.checked=t.d;
+    c.onchange=function(){t.d=c.checked;saveT();drawT()};
+    var s=document.createElement("span");s.textContent=t.t;
+    var x=document.createElement("button");x.textContent="✕";x.onclick=function(){tugas.splice(i,1);saveT();drawT()};
+    r.appendChild(c);r.appendChild(s);r.appendChild(x);l.appendChild(r);
+  });
+  var sisa=tugas.filter(function(t){return !t.d}).length;var tot=tugas.length,sel=tot-sisa,pc=tot?Math.round(sel/tot*100):0;
+  $("pT").textContent=tot?(sisa===0?"Semua tugas beres! 🏆":"Progres tugas: "+pc+"%"):"Belum ada tugas ✨";
+  $("pS").textContent=tot?sel+" dari "+tot+" selesai":"Tambah PR pertamamu di bawah";$("pB").style.width=pc+"%";
+  $("tNote").textContent=tugas.length?sisa+" tugas belum selesai · tersimpan di HP ini":"Belum ada tugas. Santai dulu 😄";
+}
+function addT(){var v=$("tIn").value.trim();if(!v)return;tugas.unshift({t:v,d:false});$("tIn").value="";saveT();drawT()}
+$("tAdd").addEventListener("click",addT);
+$("tIn").addEventListener("keydown",function(e){if(e.key==="Enter")addT()});
+drawT();
+
+/* ---------- TEMAN DAFFA ---------- */
+["Ardi","Putra","Reihan","Agis","Muayad","Rifky","Akhsan","Riko","Abi","Fahmi","Hilmi","Adit","Huga"].forEach(function(n,i){
+  var f=document.createElement("div");f.className="friend";f.style.setProperty("--h",(i*47+20)%360);f.innerHTML='<i>'+(i+1)+'</i>'+n;$("friendList").appendChild(f)});
+
+/* ---------- JADWAL SHOLAT (hitung astronomis, Bondowoso) ---------- */
+var LAT=-7.9135,LNG=113.8216,R=Math.PI/180,D2=180/Math.PI;
+function calc(y,m,d){
+  var jd=Date.UTC(y,m,d)/864e5+2440587.5-LNG/360,DD=jd-2451545,
+  g=(357.529+0.98560028*DD)%360,q=(280.459+0.98564736*DD)%360,
+  L=(q+1.915*Math.sin(g*R)+0.02*Math.sin(2*g*R))%360,e=23.439-3.6e-7*DD,
+  RA=((D2*Math.atan2(Math.cos(e*R)*Math.sin(L*R),Math.cos(L*R))/15)%24+24)%24,
+  eq=q/15-RA;eq-=24*Math.round(eq/24);
+  var dc=D2*Math.asin(Math.sin(e*R)*Math.sin(L*R)),noon=12+7-LNG/15-eq;
+  function ang(a){return D2*Math.acos((-Math.sin(a*R)-Math.sin(dc*R)*Math.sin(LAT*R))/(Math.cos(dc*R)*Math.cos(LAT*R)))/15}
+  var alt=D2*Math.atan(1/(1+Math.tan(Math.abs(LAT-dc)*R)));
+  function mn(t,a){return Math.ceil(t*60)+a}
+  var subuh=mn(noon-ang(20),2);
+  return [subuh-10,subuh,mn(noon-ang(0.833),-2),mn(noon,2),mn(noon+ang(-alt),2),mn(noon+ang(0.833),2),mn(noon+ang(18),2)];
+}
+var names=["Imsak","Subuh","Terbit","Dzuhur","Ashar","Maghrib","Isya"],main=[1,3,4,5,6];
+function fmt(m){m=((m%1440)+1440)%1440;return pad(Math.floor(m/60))+":"+pad(m%60)}
+/* cache hasil hitungan per hari supaya tidak dihitung ulang tiap detik */
+var cache={k:"",v:null};
+function today(){var w=wib(),k=w.getUTCFullYear()+"-"+w.getUTCMonth()+"-"+w.getUTCDate();if(cache.k!==k){cache.k=k;cache.v=calc(w.getUTCFullYear(),w.getUTCMonth(),w.getUTCDate())}return cache.v}
+function nowMin(){var w=wib();return w.getUTCHours()*60+w.getUTCMinutes()}
+function nextPrayer(){
+  var t=today(),n=nowMin(),w=wib();
+  for(var i=0;i<main.length;i++)if(t[main[i]]>n)return {i:main[i],at:t[main[i]]*60};
+  var tm=calc(w.getUTCFullYear(),w.getUTCMonth(),w.getUTCDate()+1);return {i:1,at:(tm[1]+1440)*60};
+}
+function drawPray(){
+  var t=today(),nx=nextPrayer(),h="";
+  names.forEach(function(nm,i){h+='<div class="pray-row'+(main.indexOf(i)<0?" minor":"")+(i===nx.i?" next":"")+'"><span>'+nm+'</span><b>'+fmt(t[i])+' WIB</b></div>'});
+  $("prayList").innerHTML=h;
+}
+var on=false,fired="";
+try{on=localStorage.getItem("adzan")==="1"}catch(e){}
+function btn(){$("adzanBtn").textContent="🔔 Pengingat Adzan: "+(on?"Aktif":"Mati");$("adzanBtn").className="btn"+(on?" on":"")}
+var ac=null;
+function beep(){
+  try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+  [0,.7,1.4].forEach(function(o){var s=ac.createOscillator(),g=ac.createGain();s.frequency.value=o===1.4?660:880;s.connect(g);g.connect(ac.destination);
+  var t=ac.currentTime+o;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.4,t+.05);g.gain.exponentialRampToValueAtTime(.0001,t+.6);s.start(t);s.stop(t+.65)})}catch(e){}
+  try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}
+}
+$("adzanBtn").addEventListener("click",function(){
+  on=!on;btn();try{localStorage.setItem("adzan",on?"1":"0")}catch(e){}
+  if(on){beep();try{window.Notification&&Notification.permission==="default"&&Notification.requestPermission()}catch(e){}}
+});
+btn();
+var lastMin=-1;
+function tick(){
+  if(document.hidden)return;
+  var w=wib(),secNow=w.getUTCHours()*3600+w.getUTCMinutes()*60+w.getUTCSeconds(),n=Math.floor(secNow/60);
+  /* alarm adzan tetap dicek tiap menit walau tab Sholat tidak dibuka */
+  if(n!==lastMin){lastMin=n;var t=today();
+    main.forEach(function(i){var key=w.getUTCDate()+"-"+i;
+      if(on&&t[i]===n&&fired!==key){fired=key;beep();
+        try{window.Notification&&Notification.permission==="granted"&&new Notification("Waktu "+names[i]+" untuk Bondowoso",{body:fmt(t[i])+" WIB"})}catch(e){}}});
+    if($("view-sholat").classList.contains("active"))drawPray();
+  }
+  /* hitung mundur hanya diperbarui saat tab Sholat terlihat */
+  if(!$("view-sholat").classList.contains("active"))return;
+  var nx=nextPrayer(),left=nx.at-secNow;if(left<0)left+=86400;
+  $("nextName").textContent=names[nx.i];
+  $("nextCd").textContent=pad(Math.floor(left/3600))+":"+pad(Math.floor(left%3600/60))+":"+pad(left%60);
+}
+drawPray();tick();setInterval(tick,1000);
+
+/* ---------- NAVIGASI TAB ---------- */
+var btns=document.querySelectorAll(".tab-btn");
+function go(v){
+  btns.forEach(function(x){x.classList.toggle("active",x.getAttribute("data-view")===v)});
+  document.querySelectorAll(".view").forEach(function(x){x.classList.remove("active")});
+  $("view-"+v).classList.add("active");
+  document.querySelector("main").scrollTop=0;
+  if(v==="sholat"){drawPray();lastMin=-1;tick()}
+}
+btns.forEach(function(b){b.addEventListener("click",function(){go(b.getAttribute("data-view"))})});
+
+/* ---------- MODAL ---------- */
+function openSheet(node){var s=$("sheet");s.innerHTML="";s.appendChild(node);$("ov").classList.add("show")}
+function closeSheet(){$("ov").classList.remove("show")}
+$("ov").addEventListener("click",function(e){if(e.target===$("ov"))closeSheet()});
+function openMat(code){
+  var d=document.createElement("div"),x=D[code];
+  d.innerHTML="<h2>📖 "+NM[code]+"</h2>"+(x?x.m:"Materi belum tersedia.");
+  if(x){d.appendChild(mk("btn","🧠 Latihan Kuis "+code,function(){closeSheet();go("kuis");startQ(code)}))}
+  d.appendChild(mk("btn","Tutup",closeSheet));
+  openSheet(d);
+}
+
+/* ---------- KUIS ---------- */
+var IC={IPA:"🔬",PKN:"🇮🇩",MTK:"📐",TIK:"💻",SBK:"🎨",IPS:"🌏",BK:"💬",BIN:"📚",PAI:"🕌",BIG:"🔤",Jawa:"🏯",PJOK:"⚽",BTQ:"📖"};
+var TAG={b:"Soal Biasa",p:"Pilihan Ganda",j:"Menjodohkan"};
+function mcard(cls,e,t,sm,h,f){var b=document.createElement("button");b.className="mc "+cls;b.style.setProperty("--h",h);b.innerHTML='<span class="e">'+e+'</span><span><span class="t"></span><small></small></span>';b.querySelector(".t").textContent=t;b.querySelector("small").textContent=sm;b.onclick=f;return b}
+$("chips").appendChild(mcard("all","🎲","Acak 10 Soal","Tantangan campur semua mapel",0,function(){startQ("ALL")}));
+Object.keys(D).forEach(function(k,i){var x=D[k];$("chips").appendChild(mcard("",IC[k]||"📘",k,NM[k]+" · "+(x.b.length+x.p.length+x.j.length)+" soal",(i*29+210)%360,function(){startQ(k)}))});
+var QS=null;
+function pts(it){return it.t==="j"?it.q.length:1}
+function startQ(code){
+  var l=[];
+  if(code==="ALL"){
+    var pool=[];Object.keys(D).forEach(function(k){D[k].b.forEach(function(q){pool.push({k:k,t:"b",q:q})});D[k].p.forEach(function(q){pool.push({k:k,t:"p",q:q})})});
+    l=shuf(pool).slice(0,10);
+  }else{
+    var x=D[code];
+    shuf(x.b).forEach(function(q){l.push({k:code,t:"b",q:q})});
+    shuf(x.p).forEach(function(q){l.push({k:code,t:"p",q:q})});
+    l.push({k:code,t:"j",q:x.j});
+  }
+  var tot=0;l.forEach(function(it){tot+=pts(it)});
+  QS={l:l,i:0,s:0,st:0,bs:0,code:code,tot:tot};$("qHome").style.display="none";$("qBox").style.display="block";showQ();
+}
+function showQ(){
+  var b=$("qBox");b.innerHTML="";
+  if(QS.i>=QS.l.length){
+    var n=QS.tot,pc=Math.round(QS.s/n*100),r=document.createElement("div");r.className="info-card";
+    r.innerHTML='<div class="ring" style="background:conic-gradient(#C6962E '+pc*3.6+'deg,var(--line) 0)"><div>'+pc+'%<small>'+QS.s+' / '+n+' benar</small></div></div><h2>'+(pc===100?"Sempurna! 🔥":pc>=60?"Bagus banget! 💪":"Ayo coba lagi! 📖")+'</h2><p>'+(pc===100?"Kamu penguasa materi ini 👑":pc>=60?"Sedikit lagi jadi juara ⭐":"Baca materinya lagi, pasti bisa 🌱")+' · Streak terbaik: 🔥'+QS.bs+'</p>';
+    b.appendChild(r);if(pc===100)superFx();
+    b.appendChild(mk("btn on","🔁 Ulangi",function(){startQ(QS.code)}));
+    b.appendChild(mk("btn","Pilih mapel lain",function(){b.style.display="none";$("qHome").style.display="block"}));return;
+  }
+  var it=QS.l[QS.i],q=it.q,done=false;
+  b.innerHTML='<div class="qtop"><span>'+IC[it.k]+" "+it.k+" · "+(QS.i+1)+"/"+QS.l.length+'</span><span>⭐ '+QS.s+' &nbsp; 🔥 '+QS.st+'</span></div><div class="qbar"><i style="width:'+(QS.i/QS.l.length*100)+'%"></i></div><span class="qtag">'+TAG[it.t]+'</span>';
+  var fb=document.createElement("div");fb.className="fb";
+  var nx=mk("btn on","Lanjut ➜",function(){QS.i++;showQ()});nx.style.display="none";
+  var c=document.createElement("div");c.className="qcard";
+  function good(){QS.s++;QS.st++;if(QS.st>QS.bs)QS.bs=QS.st}
+  try{navigator.vibrate&&0}catch(e){}
+  if(it.t==="j"){
+    c.textContent="Jodohkan pasangan yang tepat 🔗";b.appendChild(c);
+    var mat=0,sel=-1,L=[],Rb=[],bad={},g=document.createElement("div");g.className="mg";
+    var cl=document.createElement("div"),cr=document.createElement("div");
+    q.forEach(function(p,i){var x=mk("opt",p[0],function(){if(x.classList.contains("ok"))return;L.forEach(function(y){y.classList.remove("sel")});sel=i;x.classList.add("sel")});L.push(x);cl.appendChild(x)});
+    shuf(q.map(function(_,i){return i})).forEach(function(i){
+      var y=mk("opt",q[i][1],function(){
+        if(sel<0||y.classList.contains("ok"))return;
+        if(i===sel){L[i].classList.remove("sel");L[i].classList.add("ok");y.classList.add("ok");
+          if(!bad[i])good();mat++;sel=-1;fb.style.color="#2e9a4b";fb.textContent="Cocok! 🎉";
+          if(mat===q.length){nx.style.display="block";fb.textContent="Semua pasangan benar! 🏆"}
+        }else{bad[sel]=1;QS.st=0;y.classList.add("no");fb.style.color="#d25a5a";fb.textContent="Belum cocok 😅 Coba lagi";setTimeout(function(){y.classList.remove("no")},450)}
+      });Rb.push(y);cr.appendChild(y)});
+    g.appendChild(cl);g.appendChild(cr);b.appendChild(g);b.appendChild(fb);b.appendChild(nx);return;
+  }
+  c.textContent=q[0];b.appendChild(c);
+  var opts=[];
+  q[1].forEach(function(o,j){
+    var bt=document.createElement("button");bt.className="opt";bt.innerHTML="<b>"+"ABCD".charAt(j)+"</b><span></span>";bt.lastChild.textContent=o;
+    bt.onclick=function(){
+      if(done)return;done=true;
+      if(j===q[2]){good();bt.classList.add("ok");fb.style.color="#2e9a4b";fb.textContent=QS.st>1?"Benar! 🔥 Streak x"+QS.st:"Benar! 🎉"}
+      else{QS.st=0;bt.classList.add("no");opts[q[2]].classList.add("ok");fb.style.color="#d25a5a";fb.textContent="Belum tepat 😅 Jawaban benar ditandai hijau"}
+      try{navigator.vibrate&&navigator.vibrate(j===q[2]?40:[60,40,60])}catch(e){}
+      nx.style.display="block";
+    };opts.push(bt);b.appendChild(bt);
+  });
+  b.appendChild(fb);b.appendChild(nx);
+}
+
+/* ---------- LOGIN NAMA, BAGIKAN INFO, DAFTAR PENGGUNA (lewat server) ---------- */
+var WA="6285151833180",API="",me="";/* API dikosongkan = server yang sama. Jika index.html di-host terpisah, isi alamat server, mis. "https://nama-app.onrender.com" */
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
+me=lsGet("nama","");
+function api(path,body){return fetch(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json()})}
+function daftar(n){try{api("/api/daftar",{nama:n}).catch(function(){})}catch(e){}}
+function showMe(){$("meLabel").textContent=me?"Halo, "+me+" 👋":"";$("infoMe").textContent=me?"Masuk sebagai "+me:"Belum masuk"}
+function waLink(){return "https://wa.me/"+WA+"?text="+encodeURIComponent("Halo Daffa, saya "+me+" (kelas VIII A) memakai aplikasi Jadwal SMPN 2 Bondowoso 🙌")}
+function shareSheet(first){
+  var d=document.createElement("div");
+  d.innerHTML="<h2></h2><p>Kabari developer kalau kamu memakai aplikasi ini lewat WhatsApp.</p>";
+  d.firstChild.textContent=(first?"Halo, ":"Bagikan info, ")+me+"! 👋";
+  var a=document.createElement("a");a.className="btn wa";a.href=waLink();a.target="_blank";a.rel="noopener";a.textContent="📤 Kabari via WhatsApp";a.onclick=function(){setTimeout(closeSheet,300)};
+  d.appendChild(a);d.appendChild(mk("btn",first?"Nanti saja":"Tutup",closeSheet));openSheet(d);
+}
+function doLogin(){
+  var v=$("lIn").value.trim().replace(/\s+/g," ");
+  if(v.length<2){$("lMsg").textContent="Tulis namamu dulu ya 🙂";return}
+  me=v;try{localStorage.setItem("nama",v)}catch(e){}
+  daftar(v);$("login").classList.remove("show");$("lMsg").textContent="";showMe();shareSheet(true);
+}
+$("lBtn").addEventListener("click",doLogin);
+$("lIn").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin()});
+$("bRen").addEventListener("click",function(){$("lIn").value=me;$("login").classList.add("show")});
+$("bShare").addEventListener("click",function(){if(me)shareSheet(false);else $("login").classList.add("show")});
+function openUsers(){
+  var d=document.createElement("div");
+  d.innerHTML="<h2>🔒 Daftar Pengguna</h2><p>Masukkan sandi untuk melihat siapa saja yang memakai aplikasi ini.</p>";
+  var inp=document.createElement("input");inp.className="in";inp.type="password";inp.placeholder="Sandi…";inp.autocomplete="off";
+  var msg=document.createElement("div");msg.className="msg";
+  function cek(){
+    msg.textContent="Memeriksa…";
+    api("/api/admin",{sandi:inp.value,aksi:"list"}).then(function(j){
+      if(j.ok)listUsers(d,inp.value,j.pengguna);else msg.textContent=j.pesan||"Sandi salah 🔒";
+    }).catch(function(){msg.textContent="Server belum terhubung 😕"});
+  }
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter")cek()});
+  d.appendChild(inp);d.appendChild(mk("btn on","Buka",cek));d.appendChild(msg);d.appendChild(mk("btn","Tutup",closeSheet));openSheet(d);
+}
+function listUsers(d,sandi,arr){
+  d.innerHTML="";var h=document.createElement("h2");h.textContent="👥 Pengguna Aplikasi ("+arr.length+")";d.appendChild(h);
+  var l=document.createElement("div");l.className="ulist";
+  arr.forEach(function(u,i){var f=document.createElement("div");f.className="friend";f.style.setProperty("--h",(i*47+20)%360);
+    var ic=document.createElement("i");ic.textContent=i+1;var sp=document.createElement("span");sp.textContent=u;
+    var x=document.createElement("button");x.textContent="✕";x.onclick=function(){aksi("hapus",u)};
+    f.appendChild(ic);f.appendChild(sp);f.appendChild(x);l.appendChild(f)});
+  if(!arr.length){var e=document.createElement("div");e.className="note";e.textContent="Belum ada pengguna.";l.appendChild(e)}
+  d.appendChild(l);
+  var add=document.createElement("input");add.className="in";add.placeholder="Tambah nama pengguna…";add.maxLength=24;
+  var msg=document.createElement("div");msg.className="msg";
+  function aksi(a,n){api("/api/admin",{sandi:sandi,aksi:a,nama:n}).then(function(j){if(j.ok)listUsers(d,sandi,j.pengguna);else msg.textContent=j.pesan||"Gagal"}).catch(function(){msg.textContent="Server belum terhubung 😕"})}
+  function tambah(){var v=add.value.trim();if(v.length>=2)aksi("tambah",v)}
+  add.addEventListener("keydown",function(e){if(e.key==="Enter")tambah()});
+  d.appendChild(add);d.appendChild(mk("btn on","Tambah",tambah));d.appendChild(msg);d.appendChild(mk("btn","Tutup",closeSheet));
+}
+$("bUsers").addEventListener("click",openUsers);
+showMe();if(!me)$("login").classList.add("show");else daftar(me);
+
+/* ---------- EASTER EGG & MODE SUPER FRIENDS ---------- */
+document.querySelectorAll(".premium").forEach(function(e){e.addEventListener("click",function(){$("egg").click()})});
+function superFx(){
+  var f=document.createElement("div");f.className="fx";
+  f.innerHTML='<div class="fx-flash"></div><div class="fx-title">✨ SUPER FRIENDS ✨<br><small style="font-size:15px;font-weight:700">💎 Premium aktif</small></div>';
+  var em=["✨","⭐","🎉","💎","🎊","🌟"];
+  for(var i=0;i<24;i++){var p=document.createElement("span");p.className="piece";p.textContent=em[i%em.length];
+    p.style.left=Math.random()*100+"%";p.style.fontSize=(16+Math.random()*16)+"px";
+    p.style.animationDuration=(2+Math.random()*2.5)+"s";p.style.animationDelay=(Math.random()*1.2)+"s";f.appendChild(p)}
+  document.body.appendChild(f);setTimeout(function(){f.remove()},5200);
+  try{navigator.vibrate&&navigator.vibrate([100,60,100,60,250])}catch(e){}
+  try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    [523,659,784,1047].forEach(function(fr,k){var o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+k*.12;o.type="triangle";o.frequency.value=fr;o.connect(g);g.connect(ac.destination);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.3,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.4);o.start(t);o.stop(t+.45)})}catch(e){}
+}
+function setSuper(v){document.body.classList.toggle("super",v);try{localStorage.setItem("super",v?"1":"0")}catch(e){}if(!v&&$("view-kuis").classList.contains("active"))go("jadwal")}
+try{if(localStorage.getItem("super")==="1")document.body.classList.add("super")}catch(e){}
+$("egg").addEventListener("click",function(){
+  var d=document.createElement("div");
+  if(document.body.classList.contains("super")){
+    d.innerHTML="<h2>✨ Mode Super Friends aktif</h2><p>Ketuk mapel di tab Jadwal untuk membuka materi, dan buka tab Kuis untuk latihan soal.</p>";
+    d.appendChild(mk("btn","Tutup",closeSheet));d.appendChild(mk("btn on","Matikan mode Super",function(){setSuper(false);closeSheet()}));
+  }else{
+    d.innerHTML="<h2>SIAPA ORANG TERGANTENG DI KELAS?</h2>";
+    var inp=document.createElement("input");inp.className="in";inp.placeholder="Ketik jawabanmu…";inp.maxLength=30;
+    var msg=document.createElement("div");msg.className="msg";
+    function cek(){
+      if(inp.value.trim().toLowerCase().indexOf("daffa")>-1){setSuper(true);closeSheet();superFx()}
+      else{msg.textContent="Salah! Coba pikir lagi 😜"}
+    }
+    inp.addEventListener("keydown",function(e){if(e.key==="Enter")cek()});
+    d.appendChild(inp);d.appendChild(mk("btn","Jawab",cek));d.appendChild(msg);
+  }
+  openSheet(d);
+});
+})();
+</script>
+</body>
+</html>
