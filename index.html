@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jadwal SMPN 2 Bondowoso</title>
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#162A4D"><link rel="apple-touch-icon" href="/icon-192.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <style>
 :root{--navy:#162A4D;--navy-deep:#0E1D38;--gold:#C6962E;--gold-soft:#F4E6C3;--paper:#F6F3EC;--card:#fff;--ink:#1E2430;--ink-soft:#6B7280;--line:#E4DFD3;--today-bg:#FFF7E6;--ok:#d9f2df;--no:#fbdada;box-sizing:border-box}
 *{box-sizing:border-box}
@@ -640,5 +641,6 @@ $("egg").addEventListener("click",function(){
 });
 })();
 </script>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})</script>
 </body>
 </html>
