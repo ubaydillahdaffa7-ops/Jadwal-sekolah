@@ -1,0 +1,7 @@
+{
+  "name": "jadwal-s2b-server",
+  "version": "1.0.0",
+  "description": "Server daftar pengguna Jadwal SMPN 2 Bondowoso",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
