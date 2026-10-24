@@ -164,6 +164,15 @@ body.super nav button{position:relative}
 .lcard .big-crest{margin-bottom:10px}.lcard h2{margin:0 0 4px;font-size:18px;color:var(--navy)}.lcard p{margin:0 0 14px;font-size:12.5px;color:var(--ink-soft)}
 .lmsg{min-height:18px;font-size:12.5px;color:#d25a5a;margin-top:6px}
 .ulist{display:flex;flex-direction:column;gap:8px;margin:10px 0}.ulist .friend{margin:0}.ulist .friend span{flex:1;word-break:break-word}.ulist button{border:none;background:none;font-size:16px;color:var(--ink-soft)}
+.clist{display:flex;flex-direction:column;gap:8px}
+.cm{max-width:84%;padding:8px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line);align-self:flex-start;font-size:13.5px;line-height:1.45;word-break:break-word}
+.cm.me{align-self:flex-end;background:var(--gold-soft);border-color:var(--gold);color:#0E1D38}
+.cm .cn{font-size:11px;font-weight:800;color:var(--navy);margin-bottom:2px}.cm.me .cn{color:#7a5a14}
+.cm .ct{font-size:10px;color:var(--ink-soft);margin-top:2px;text-align:right}.cm.me .ct{color:#7a5a14}
+.cm .cx{border:none;background:none;color:#d25a5a;margin-left:6px;font-size:13px;padding:0 2px}
+.cin{position:sticky;bottom:-8px;background:var(--paper);padding:8px 0 4px;margin-top:10px;z-index:2}
+.cin .add{margin-bottom:4px}
+nav .ic{font-size:18px}
 @media (prefers-reduced-motion:reduce){.piece,.egg{animation:none}}
 @media (prefers-color-scheme:dark){:root{--paper:#11151D;--card:#1A2030;--ink:#EDEFF4;--ink-soft:#9AA3B5;--line:#2A3246;--today-bg:#241C10;--navy:#8FB0E8}
 header,.hero{--navy:#162A4D}.hero,.btn{color:#fff}.btn:not(.on):not(.wa):not(.mail){background:#2A4A80}.btn.mail{color:var(--navy-deep)}nav{background:#1A2030}.friend i,.big-crest{background:#2A3246}.opt.sel{color:#0E1D38}}
@@ -190,6 +199,13 @@ header,.hero{--navy:#162A4D}.hero,.btn{color:#fff}.btn:not(.on):not(.wa):not(.ma
     <div class="section-title">PR &amp; Tugas</div>
     <div class="add"><input id="tIn" placeholder="Tulis PR atau tugas…" maxlength="80"><button id="tAdd">Tambah</button></div>
     <div class="prog"><b id="pT"></b><span id="pS"></span><div class="bar"><i id="pB"></i></div></div><div id="tList"></div><div class="note" id="tNote"></div><div style="margin-top:12px"><div class="premium"><span class="gem">💎</span><span>Mau fitur lebih banyak &amp; tampilan <b>Premium</b>? Upgrade ke Premium dengan <b>klik emoticon berlian 💎</b> di pojok kanan atas.</span></div></div><div class="promo mini"><span>Ingin fitur lebih banyak dan tampilan <b>Premium</b>? Upgrade ke Premium dengan klik emoticon berlian 💎 di pojok kanan atas.</span></div>
+  </section>
+
+  <section class="view" id="view-chat">
+    <div class="section-title">Chat Kelas 💬</div>
+    <div class="note" style="margin-bottom:10px">Chat publik: semua pengguna bisa membaca. Jaga sopan ya. Hanya 100 pesan terakhir yang disimpan.</div>
+    <div id="chatList" class="clist"></div><div class="note" id="cEmpty" style="margin-top:14px">Belum ada pesan. Jadi yang pertama! 👋</div>
+    <div class="cin"><div class="add"><input id="cIn" placeholder="Tulis pesan…" maxlength="300" autocomplete="off"><button id="cBtn">Kirim</button></div><div class="note" id="cStat" style="min-height:16px"></div><div style="display:flex;gap:8px"><button class="btn" id="cAdm" style="margin:4px 0 0;padding:8px;font-size:12px">🔒 Admin</button><button class="btn" id="cClr" style="display:none;margin:4px 0 0;padding:8px;font-size:12px">🗑️ Kosongkan Chat</button></div></div>
   </section>
 
   <section class="view" id="view-libur"><div class="section-title">Hari Libur &amp; Cuti Bersama 2026–2027</div><div id="holList"></div></section>
@@ -230,6 +246,7 @@ header,.hero{--navy:#162A4D}.hero,.btn{color:#fff}.btn:not(.on):not(.wa):not(.ma
   <button class="tab-btn" data-view="sholat"><span class="ic">🕌</span>Sholat</button>
   <button class="tab-btn" data-view="tugas"><span class="ic">📝</span>Tugas</button>
   <button class="tab-btn tab-kuis" data-view="kuis"><span class="ic">🧠</span>Kuis</button>
+  <button class="tab-btn" data-view="chat"><span class="ic">💬</span>Chat</button>
   <button class="tab-btn" data-view="libur"><span class="ic">🎉</span>Libur</button>
   <button class="tab-btn" data-view="teman"><span class="ic">👥</span>Teman</button>
   <button class="tab-btn" data-view="info"><span class="ic">ℹ️</span>Info</button>
@@ -463,6 +480,7 @@ function go(v){
   $("view-"+v).classList.add("active");
   document.querySelector("main").scrollTop=0;
   if(v==="sholat"){drawPray();lastMin=-1;tick()}
+  if(v==="chat"){pollChat()}
 }
 btns.forEach(function(b){b.addEventListener("click",function(){go(b.getAttribute("data-view"))})});
 
@@ -603,6 +621,63 @@ function listUsers(d,sandi,arr){
 }
 $("bUsers").addEventListener("click",openUsers);
 showMe();if(!me)$("login").classList.add("show");else daftar(me);
+
+/* ---------- CHAT PUBLIK ---------- */
+var chatLast=0,chatSandi="",chatBusy=false,chatEls={},cList=$("chatList"),mn=document.querySelector("main");
+function jamWib(iso){var d=new Date(new Date(iso).getTime()+7*36e5);return pad(d.getUTCHours())+":"+pad(d.getUTCMinutes())}
+function chatEl(m){
+  var e=document.createElement("div");e.className="cm"+(m.nama===me?" me":"");
+  var n=document.createElement("div");n.className="cn";n.textContent=m.nama;
+  var t=document.createElement("div");t.textContent=m.teks;
+  var w=document.createElement("div");w.className="ct";w.textContent=jamWib(m.waktu);
+  if(chatSandi){var x=document.createElement("button");x.className="cx";x.textContent="✕";x.onclick=function(){api("/api/admin",{sandi:chatSandi,aksi:"hapuschat",id:m.id}).then(function(){pollChat()}).catch(function(){})};w.appendChild(x)}
+  e.appendChild(n);e.appendChild(t);e.appendChild(w);return e;
+}
+function pollChat(){
+  if(chatBusy)return;chatBusy=true;
+  api("/api/chat/baca",{sejak:chatLast}).then(function(j){
+    chatBusy=false;if(!j.ok)return;
+    var near=mn.scrollHeight-mn.scrollTop-mn.clientHeight<140,first=chatLast===0,set={};
+    j.ids.forEach(function(i){set[i]=1});
+    Object.keys(chatEls).forEach(function(i){if(!set[i]){chatEls[i].remove();delete chatEls[i]}});
+    j.pesan.forEach(function(m){if(chatEls[m.id])return;var e=chatEl(m);chatEls[m.id]=e;cList.appendChild(e);if(m.id>chatLast)chatLast=m.id});
+    $("cEmpty").style.display=cList.children.length?"none":"block";
+    if(first||(near&&j.pesan.length))mn.scrollTop=mn.scrollHeight;
+    $("cStat").textContent="";
+  }).catch(function(){chatBusy=false;$("cStat").textContent="Server belum terhubung 😕 (mencoba lagi…)"});
+}
+function kirimChat(){
+  var v=$("cIn").value.trim();if(!v)return;
+  if(!me){$("login").classList.add("show");return}
+  $("cBtn").disabled=true;
+  api("/api/chat/kirim",{nama:me,teks:v}).then(function(j){
+    $("cBtn").disabled=false;
+    if(j.ok){$("cIn").value="";$("cStat").textContent="";pollChat();setTimeout(function(){mn.scrollTop=mn.scrollHeight},400)}
+    else $("cStat").textContent=j.pesan||"Gagal mengirim";
+  }).catch(function(){$("cBtn").disabled=false;$("cStat").textContent="Server belum terhubung 😕"});
+}
+$("cBtn").addEventListener("click",kirimChat);
+$("cIn").addEventListener("keydown",function(e){if(e.key==="Enter")kirimChat()});
+$("cAdm").addEventListener("click",function(){
+  var d=document.createElement("div");
+  d.innerHTML="<h2>🔒 Admin Chat</h2><p>Masukkan sandi untuk menghapus pesan.</p>";
+  var inp=document.createElement("input");inp.className="in";inp.type="password";inp.placeholder="Sandi…";inp.autocomplete="off";
+  var msg=document.createElement("div");msg.className="msg";
+  function cek(){
+    msg.textContent="Memeriksa…";
+    api("/api/admin",{sandi:inp.value,aksi:"list"}).then(function(j){
+      if(!j.ok){msg.textContent=j.pesan||"Sandi salah 🔒";return}
+      chatSandi=inp.value;cList.innerHTML="";chatEls={};chatLast=0;$("cClr").style.display="block";$("cAdm").style.display="none";closeSheet();pollChat();
+    }).catch(function(){msg.textContent="Server belum terhubung 😕"});
+  }
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter")cek()});
+  d.appendChild(inp);d.appendChild(mk("btn on","Masuk",cek));d.appendChild(msg);d.appendChild(mk("btn","Tutup",closeSheet));openSheet(d);
+});
+$("cClr").addEventListener("click",function(){
+  if(!confirm("Hapus SEMUA pesan chat?"))return;
+  api("/api/admin",{sandi:chatSandi,aksi:"kosongchat"}).then(function(){pollChat()}).catch(function(){});
+});
+setInterval(function(){if(!document.hidden&&$("view-chat").classList.contains("active"))pollChat()},3000);
 
 /* ---------- EASTER EGG & MODE SUPER FRIENDS ---------- */
 document.querySelectorAll(".premium").forEach(function(e){e.addEventListener("click",function(){$("egg").click()})});
