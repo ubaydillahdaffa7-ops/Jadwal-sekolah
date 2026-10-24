@@ -4,9 +4,11 @@ const PORT = process.env.PORT || 3000;
 const SANDI = process.env.SANDI || "ubayxxx7777"; // sebaiknya atur lewat Environment Variable SANDI
 const DB = process.env.DATA_FILE || path.join(__dirname, "data.json");
 
-let data = { pengguna: [] };
+let data = { pengguna: [], chat: [], chatId: 0 };
 try { data = JSON.parse(fs.readFileSync(DB, "utf8")); } catch (e) {}
 if (!Array.isArray(data.pengguna)) data.pengguna = [];
+if (!Array.isArray(data.chat)) data.chat = [];
+data.chatId = Number(data.chatId) || data.chat.reduce((a, m) => Math.max(a, m.id), 0);
 const simpan = () => fs.writeFile(DB, JSON.stringify(data), () => {});
 
 // ---- Ikon aplikasi dibuat otomatis oleh server (tidak perlu upload gambar) ----
@@ -45,6 +47,12 @@ const hash = s => crypto.createHash("sha256").update(String(s)).digest();
 const sandiBenar = s => crypto.timingSafeEqual(hash(s), hash(SANDI));
 const bersih = n => String(n || "").trim().replace(/\s+/g, " ").slice(0, 24);
 const gagal = {}; // batas percobaan sandi per IP
+const antri = {}; // batas kirim chat per IP
+const ipDari = req => (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
+// Saringan kata kasar sederhana (kata diganti ***)
+const KASAR = ["anjing", "babi", "bangsat", "bajingan", "kontol", "memek", "ngentot", "goblok", "tolol", "asu", "jancok", "jancuk", "kampret", "brengsek", "sialan", "pepek", "jembut", "pantek"];
+const polaKasar = KASAR.map(w => new RegExp("\\b" + w.split("").map(c => c + "+").join("") + "\\b", "gi"));
+const saring = t => polaKasar.reduce((x, r) => x.replace(r, "***"), t);
 
 function tambah(n) {
   if (n.length < 2) return false;
@@ -78,11 +86,29 @@ http.createServer(async (req, res) => {
     res.writeHead(204, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Allow-Methods": "POST,GET" });
     return res.end();
   }
+  if (req.method === "POST" && (u === "/api/chat/kirim" || u === "/api/chat/baca")) {
+    let b; try { b = await baca(req); } catch (e) { return json(res, 400, { ok: false }); }
+    if (u === "/api/chat/baca") {
+      const s = Number(b.sejak) || 0;
+      return json(res, 200, { ok: true, pesan: data.chat.filter(m => m.id > s), ids: data.chat.map(m => m.id) });
+    }
+    const nama = bersih(b.nama), teks = String(b.teks || "").trim().replace(/\s+/g, " ").slice(0, 300);
+    if (nama.length < 2 || !teks) return json(res, 400, { ok: false, pesan: "Isi pesan dulu ya" });
+    const ip = ipDari(req);
+    if (Date.now() - (antri[ip] || 0) < 2000) return json(res, 429, { ok: false, pesan: "Pelan-pelan ya, tunggu 2 detik ⏳" });
+    if (Object.keys(antri).length > 5000) for (const k in antri) delete antri[k];
+    antri[ip] = Date.now();
+    data.chatId++;
+    data.chat.push({ id: data.chatId, nama, teks: saring(teks), waktu: new Date().toISOString() });
+    if (data.chat.length > 100) data.chat = data.chat.slice(-100);
+    simpan();
+    return json(res, 200, { ok: true });
+  }
   if (req.method === "POST" && (u === "/api/daftar" || u === "/api/admin")) {
     let b; try { b = await baca(req); } catch (e) { return json(res, 400, { ok: false }); }
     if (u === "/api/daftar") return json(res, 200, { ok: tambah(bersih(b.nama)) });
 
-    const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
+    const ip = ipDari(req);
     const g = gagal[ip] || { n: 0, t: 0 };
     if (g.n >= 5 && Date.now() - g.t < 600000) return json(res, 429, { ok: false, pesan: "Terlalu banyak percobaan. Coba lagi 10 menit lagi." });
     if (!sandiBenar(b.sandi)) { gagal[ip] = { n: g.n + 1, t: Date.now() }; return json(res, 401, { ok: false, pesan: "Sandi salah 🔒" }); }
@@ -90,6 +116,8 @@ http.createServer(async (req, res) => {
 
     if (b.aksi === "tambah") tambah(bersih(b.nama));
     if (b.aksi === "hapus") { const n = bersih(b.nama).toLowerCase(); data.pengguna = data.pengguna.filter(x => x.nama.toLowerCase() !== n); simpan(); }
+    if (b.aksi === "hapuschat") { const id = Number(b.id); data.chat = data.chat.filter(m => m.id !== id); simpan(); }
+    if (b.aksi === "kosongchat") { data.chat = []; simpan(); }
     return json(res, 200, { ok: true, pengguna: daftarNama() });
   }
   if (req.method === "GET" && (u === "/icon-192.png" || u === "/icon-512.png" || u === "/icon-maskable.png")) {
