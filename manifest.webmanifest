@@ -1,0 +1,18 @@
+{
+  "name": "Jadwal SMPN 2 Bondowoso",
+  "short_name": "Jadwal S2B",
+  "description": "Jadwal pelajaran, sholat, tugas, dan kuis kelas VIII A SMPN 2 Bondowoso",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "id",
+  "background_color": "#162A4D",
+  "theme_color": "#162A4D",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
