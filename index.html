@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -548,7 +547,7 @@ function showQ(){
 }
 
 /* ---------- LOGIN NAMA, BAGIKAN INFO, DAFTAR PENGGUNA (lewat server) ---------- */
-var WA="6285151833180",API="",me="";/* API dikosongkan = server yang sama. Jika index.html di-host terpisah, isi alamat server, mis. "https://nama-app.onrender.com" */
+var WA="6285151833180",API="https://jadwal-sekolah.onrender.com",me="";/* API dikosongkan = server yang sama. Jika index.html di-host terpisah, isi alamat server, mis. "https://nama-app.onrender.com" */
 function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
 me=lsGet("nama","");
 function api(path,body){return fetch(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json()})}
@@ -645,4 +644,3 @@ $("egg").addEventListener("click",function(){
 <script>if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})</script>
 </body>
 </html>
-```
